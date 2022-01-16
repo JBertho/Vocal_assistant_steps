@@ -5,6 +5,7 @@ import time
 
 from joker import Joker
 from music import Music
+from synthesizer import Synthesizer
 from weather import Weather
 from reminder import Reminder
 
@@ -18,6 +19,7 @@ class Assistant:
         self.__joker = Joker()
         self.__reminders: [Reminder] = []
         self.__last_action_time = datetime.now()
+        self.__synthesizer = Synthesizer()
 
     @property
     def last_action_time(self):
@@ -64,33 +66,36 @@ class Assistant:
             time.sleep(1)
 
     def tell_weather(self):
-        print("De quelle ville veux-tu la météo ?")
+        self.__synthesizer.talk("De quelle ville veux-tu la météo ?")
         city = self.listen()
-        print(city)
         city_weather = self.__weather.get_city_weather(city)
-        print(city_weather)
+        self.__synthesizer.talk(city_weather)
 
     def tell_joke(self):
         joke = self.__joker.get_joke()
         if joke.type == "single":
-            print(joke.joke)
+            self.__synthesizer.talk(joke.joke)
         else:
-            print(joke.setup)
-            print(joke.delivery)
+            self.__synthesizer.talk(joke.setup)
+            time.sleep(1)
+            self.__synthesizer.talk(joke.delivery)
 
     def add_reminder(self):
-        print("Pour quelle heure est-ce tu veux ce rappel ?")
+        self.__synthesizer.talk("Pour quelle heure est-ce tu veux ce rappel ?")
         hour = self.listen()
-        print("Pour quelle motif veux-tu ce rappel ?")
+        self.__synthesizer.talk("Pour quelle motif veux-tu ce rappel ?")
         reason = self.listen()
         hour_in_datetime = datetime.strptime(hour, "%Hh%M")
         reminder = Reminder(hour_in_datetime, reason)
         self.__reminders.append(reminder)
-        print(f"OK ! Rappel programmé à {reminder.hour.time()} pour {reminder.reason}")
+        self.__synthesizer.talk(f"OK ! Rappel programmé à {reminder.hour.time()} pour {reminder.reason}")
 
     def check_reminders(self):
         hour = datetime.now().time()
         for index, reminder in enumerate(self.__reminders):
             if reminder.hour.time() <= hour:
-                print(f"RAPPEL : {reminder.reason}")
+                self.__synthesizer.talk(f"RAPPEL : {reminder.reason}")
                 self.__reminders.pop(index)
+
+    def talk(self, output):
+        self.__synthesizer.talk(output)

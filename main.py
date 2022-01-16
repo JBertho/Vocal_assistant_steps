@@ -49,22 +49,22 @@ def find_action_to_do(statement: str, alita: Assistant):
     elif contain_start_music_word(statement):
         music_started = Music.play_song()
         if music_started:
-            print("C'est parti !")
+            alita.talk("C'est parti !")
         else:
-            print("Je n'ai pas pu lancer le son")
+            alita.talk("Je n'ai pas pu lancer le son")
     elif contain_stop_music_word(statement):
         music_stoped = Music.stop_song()
         if music_stoped:
-            print("J'ai stoppé la musique")
+            alita.talk("J'ai stoppé la musique")
         else:
-            print("Il n'y avait pas de musique")
+            alita.talk("Il n'y avait pas de musique")
     else:
         current_time = datetime.now()
-        if len(statement) > 0 :
-            print("je n'ai pas compris la phrase")
+        if len(statement) > 0:
+            alita.talk("je n'ai pas compris la phrase")
         elif alita.listening and (current_time - alita.last_action_time).total_seconds() > 15:
             alita.listening = False
-            print("Je me désactive")
+            alita.talk("Je me désactive")
 
     if len(statement) > 0:
         alita.last_action_time = datetime.now()
@@ -84,11 +84,11 @@ if __name__ == '__main__':
 
         if contain_wake_up_word(statement):
             alita.listening = True
-            print("Avez-vous besoin de moi ?")
+            alita.talk("Avez-vous besoin de moi ?")
 
         elif containe_sleep_word(statement) and alita.listening:
             alita.listening = False
-            print("A la prochaine")
+            alita.talk("A la prochaine")
 
         elif alita.listening:
             find_action_to_do(statement, alita)
