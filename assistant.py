@@ -17,6 +17,15 @@ class Assistant:
         self.__weather = Weather()
         self.__joker = Joker()
         self.__reminders: [Reminder] = []
+        self.__last_action_time = datetime.now()
+
+    @property
+    def last_action_time(self):
+        return self.__last_action_time
+
+    @last_action_time.setter
+    def last_action_time(self, value):
+        self.__last_action_time = value
 
     @property
     def awake(self):
@@ -38,15 +47,14 @@ class Assistant:
             else:
                 self.__recognizer.energy_threshold = 300
             print("Je t'écoute")
-            audio = self.__recognizer.listen(source)
             try:
+                audio = self.__recognizer.listen(source, timeout=5)
                 statement = self.__recognizer.recognize_google(audio, language='fr-FR')
                 if statement is None:
                     statement = ""
                 return statement.lower()
-            except Exception as exception:
-                print(exception)
-                return "Il y a eu un problème"
+            except (sr.WaitTimeoutError, sr.UnknownValueError) as _:
+                return ""
 
     def start_dancing(self):
         for i in range(10):

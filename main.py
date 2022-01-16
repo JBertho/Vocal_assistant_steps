@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from dotenv import load_dotenv
 
 from assistant import Assistant
@@ -56,6 +58,17 @@ def find_action_to_do(statement: str, alita: Assistant):
             print("J'ai stoppé la musique")
         else:
             print("Il n'y avait pas de musique")
+    else:
+        current_time = datetime.now()
+        if len(statement) > 0 :
+            print("je n'ai pas compris la phrase")
+        elif alita.listening and (current_time - alita.last_action_time).total_seconds() > 15:
+            alita.listening = False
+            print("Je me désactive")
+
+    if len(statement) > 0:
+        alita.last_action_time = datetime.now()
+
 
 
 if __name__ == '__main__':
