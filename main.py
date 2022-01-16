@@ -1,8 +1,10 @@
+from dotenv import load_dotenv
+
 from assistant import Assistant
 
 
 def contain_wake_up_word(statement):
-    return "debout alita" in statement or "debout anita" in statement
+    return "debout alita" in statement or "debout anita" in statement or "debout à l'état" in statement
 
 
 def containe_sleep_word(statement):
@@ -13,12 +15,19 @@ def contain_dance_word(statement):
     return "danse" in statement
 
 
+def contain_weather_word(statement):
+    return "météo" in statement or "temps" in statement
+
+
 def find_action_to_do(statement: str, alita: Assistant):
     if contain_dance_word(statement):
         alita.start_dancing()
+    elif contain_weather_word(statement):
+        alita.tell_weather()
 
 
 if __name__ == '__main__':
+    load_dotenv()
     print("hello Alita")
 
     alita = Assistant()

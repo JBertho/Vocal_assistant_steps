@@ -1,12 +1,15 @@
 import speech_recognition as sr
 import time
 
+from weather import Weather
+
 
 class Assistant:
     def __init__(self):
         self.__awake = True
         self.__listening = False
         self.__recognizer = sr.Recognizer()
+        self.__weather = Weather()
 
     @property
     def awake(self):
@@ -17,7 +20,7 @@ class Assistant:
         return self.__listening
 
     @listening.setter
-    def listening(self,value: bool):
+    def listening(self, value: bool):
         self.__listening = value
 
     def listen(self):
@@ -39,3 +42,10 @@ class Assistant:
             time.sleep(1)
             print("♪┗ (・o･ )┓♪┏ (･o･ ) ┛♪\n")
             time.sleep(1)
+
+    def tell_weather(self):
+        print("De quelle ville veux-tu la météo ?")
+        city = self.listen()
+        print(city)
+        city_weather = self.__weather.get_city_weather(city)
+        print(city_weather)
