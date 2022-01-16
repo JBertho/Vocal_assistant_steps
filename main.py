@@ -28,11 +28,17 @@ def contain_stop_music_word(statement):
     return "stop" in statement and "musique" in statement
 
 
+def contain_joke_word(statement):
+    return "blague" in statement or "rire" in statement
+
+
 def find_action_to_do(statement: str, alita: Assistant):
     if contain_dance_word(statement):
         alita.start_dancing()
     elif contain_weather_word(statement):
         alita.tell_weather()
+    elif contain_joke_word(statement):
+        alita.tell_joke()
     elif contain_start_music_word(statement):
         music_started = Music.play_song()
         if music_started:
@@ -43,7 +49,7 @@ def find_action_to_do(statement: str, alita: Assistant):
         music_stoped = Music.stop_song()
         if music_stoped:
             print("J'ai stoppé la musique")
-        else :
+        else:
             print("Il n'y avait pas de musique")
 
 

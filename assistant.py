@@ -1,6 +1,7 @@
 import speech_recognition as sr
 import time
 
+from joker import Joker
 from music import Music
 from weather import Weather
 
@@ -11,6 +12,7 @@ class Assistant:
         self.__listening = False
         self.__recognizer = sr.Recognizer()
         self.__weather = Weather()
+        self.__joker = Joker()
 
     @property
     def awake(self):
@@ -55,3 +57,11 @@ class Assistant:
         print(city)
         city_weather = self.__weather.get_city_weather(city)
         print(city_weather)
+
+    def tell_joke(self):
+        joke = self.__joker.get_joke()
+        if joke.type == "single":
+            print(joke.joke)
+        else:
+            print(joke.setup)
+            print(joke.delivery)
