@@ -1,9 +1,12 @@
+from datetime import datetime
+
 import speech_recognition as sr
 import time
 
 from joker import Joker
 from music import Music
 from weather import Weather
+from reminder import Reminder
 
 
 class Assistant:
@@ -13,6 +16,7 @@ class Assistant:
         self.__recognizer = sr.Recognizer()
         self.__weather = Weather()
         self.__joker = Joker()
+        self.__reminders: [Reminder] = []
 
     @property
     def awake(self):
@@ -65,3 +69,20 @@ class Assistant:
         else:
             print(joke.setup)
             print(joke.delivery)
+
+    def add_reminder(self):
+        print("Pour quelle heure est-ce tu veux ce rappel ?")
+        hour = self.listen()
+        print("Pour quelle motif veux-tu ce rappel ?")
+        reason = self.listen()
+        hour_in_datetime = datetime.strptime(hour, "%Hh%M")
+        reminder = Reminder(hour_in_datetime, reason)
+        self.__reminders.append(reminder)
+        print(f"OK ! Rappel programmé à {reminder.hour.time()} pour {reminder.reason}")
+
+    def check_reminders(self):
+        hour = datetime.now().time()
+        for index, reminder in enumerate(self.__reminders):
+            if reminder.hour.time() <= hour:
+                print(f"RAPPEL : {reminder.reason}")
+                self.__reminders.pop(index)

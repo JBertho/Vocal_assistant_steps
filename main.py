@@ -31,6 +31,9 @@ def contain_stop_music_word(statement):
 def contain_joke_word(statement):
     return "blague" in statement or "rire" in statement
 
+def contain_reminder_word(statement):
+    return "rappel" in statement
+
 
 def find_action_to_do(statement: str, alita: Assistant):
     if contain_dance_word(statement):
@@ -39,6 +42,8 @@ def find_action_to_do(statement: str, alita: Assistant):
         alita.tell_weather()
     elif contain_joke_word(statement):
         alita.tell_joke()
+    elif contain_reminder_word(statement):
+        alita.add_reminder()
     elif contain_start_music_word(statement):
         music_started = Music.play_song()
         if music_started:
@@ -60,6 +65,7 @@ if __name__ == '__main__':
     alita = Assistant()
 
     while alita.awake:
+        alita.check_reminders()
         statement = alita.listen()
         print(statement)
 
