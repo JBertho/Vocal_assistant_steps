@@ -1,4 +1,5 @@
 import speech_recognition as sr
+import time
 
 
 class Assistant:
@@ -31,3 +32,10 @@ class Assistant:
             except Exception as exception:
                 print(exception)
                 return "Il y a eu un problème"
+
+    def start_dancing(self):
+        for i in range(10):
+            print("♪┏( ・o･)┛♪┗ ( ･o･) ┓♪\n")
+            time.sleep(1)
+            print("♪┗ (・o･ )┓♪┏ (･o･ ) ┛♪\n")
+            time.sleep(1)
