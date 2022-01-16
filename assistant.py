@@ -16,17 +16,17 @@ class Assistant:
         return self.__listening
 
     @listening.setter
-    def listening(self, value):
+    def listening(self,value: bool):
         self.__listening = value
 
     def listen(self):
         with sr.Microphone() as source:
-            print("Je vous écoute")
+            print("Je t'écoute")
             audio = self.__recognizer.listen(source)
             try:
                 statement = self.__recognizer.recognize_google(audio, language='fr-FR')
                 if statement is None:
-                    return ""
+                    statement = ""
                 return statement.lower()
             except Exception as exception:
                 print(exception)

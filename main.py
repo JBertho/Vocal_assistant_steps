@@ -2,11 +2,11 @@ from assistant import Assistant
 
 
 def contain_wake_up_word(statement):
-    return "debout alita" in statement
+    return "debout alita" in statement or "debout anita" in statement
 
 
-def contain_sleep_word(statement):
-    return "repose-toi alita" in statement
+def containe_sleep_word(statement):
+    return "repose-toi alita" in statement or ("repose" in statement and "alita" in statement)
 
 
 if __name__ == '__main__':
@@ -15,15 +15,16 @@ if __name__ == '__main__':
     alita = Assistant()
 
     while alita.awake:
-        print("Je suis toujours la")
         statement = alita.listen()
         print(statement)
 
         if contain_wake_up_word(statement):
             alita.listening = True
-            print("Je vous écoute")
-
-        if contain_sleep_word(statement):
+            print("Avez-vous besoin de moi ?")
+            
+        if containe_sleep_word(statement) and alita.listening:
             alita.listening = False
-            print("Je retourne au repos")
+            print("A la prochaine")
+        
+
 
