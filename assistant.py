@@ -1,6 +1,7 @@
 import speech_recognition as sr
 import time
 
+from music import Music
 from weather import Weather
 
 
@@ -25,6 +26,11 @@ class Assistant:
 
     def listen(self):
         with sr.Microphone() as source:
+
+            if Music.is_playing():
+                self.__recognizer.energy_threshold = 2000
+            else:
+                self.__recognizer.energy_threshold = 300
             print("Je t'écoute")
             audio = self.__recognizer.listen(source)
             try:
