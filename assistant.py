@@ -33,6 +33,10 @@ class Assistant:
     def awake(self):
         return self.__awake
 
+    @awake.setter
+    def awake(self,value):
+        self.__awake = value
+
     @property
     def listening(self):
         return self.__listening
@@ -50,7 +54,7 @@ class Assistant:
                 self.__recognizer.energy_threshold = 300
             print("Je t'écoute")
             try:
-                audio = self.__recognizer.listen(source, timeout=5)
+                audio = self.__recognizer.listen(source, timeout=4,phrase_time_limit=4)
                 statement = self.__recognizer.recognize_google(audio, language='fr-FR')
                 if statement is None:
                     statement = ""

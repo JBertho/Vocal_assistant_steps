@@ -11,7 +11,7 @@ def contain_wake_up_word(statement):
 
 
 def containe_sleep_word(statement):
-    return "repose-toi alita" in statement or ("repose" in statement and "alita" in statement)
+    return "repose-toi alita" in statement or ("repose" in statement)
 
 
 def contain_dance_word(statement):
@@ -36,6 +36,8 @@ def contain_joke_word(statement):
 def contain_reminder_word(statement):
     return "rappel" in statement
 
+def contain_end_word(statement):
+    return "fin" in statement or "alita" in statement
 
 def find_action_to_do(statement: str, alita: Assistant):
     if contain_dance_word(statement):
@@ -85,7 +87,10 @@ if __name__ == '__main__':
         if contain_wake_up_word(statement):
             alita.listening = True
             alita.talk("Avez-vous besoin de moi ?")
-
+        elif contain_end_word(statement):
+            alita.talk("Merci de nous avoir écouté ! Avez-vous des questions ?")
+            alita.listening = False
+            alita.awake = False
         elif containe_sleep_word(statement) and alita.listening:
             alita.listening = False
             alita.talk("A la prochaine")
